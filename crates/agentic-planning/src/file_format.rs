@@ -1,5 +1,6 @@
 use crate::{error::Result, Error, PlanningEngine};
 use serde::{Deserialize, Serialize};
+use serde_json::{Map, Value};
 use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
 
@@ -58,6 +59,24 @@ struct PersistedPlan {
     footer: AplanFooter,
 }
 
+fn canonicalize_json(value: Value) -> Value {
+    match value {
+        Value::Object(obj) => {
+            let mut sorted_keys: Vec<_> = obj.keys().cloned().collect();
+            sorted_keys.sort();
+            let mut canonical = Map::new();
+            for key in sorted_keys {
+                if let Some(v) = obj.get(&key) {
+                    canonical.insert(key, canonicalize_json(v.clone()));
+                }
+            }
+            Value::Object(canonical)
+        }
+        Value::Array(arr) => Value::Array(arr.into_iter().map(canonicalize_json).collect()),
+        other => other,
+    }
+}
+
 impl PlanningEngine {
     pub fn open(path: impl AsRef<Path>) -> Result<Self> {
         let path = path.as_ref();
@@ -107,6 +126,7 @@ impl PlanningEngine {
             let sorted_dreams: BTreeMap<_, _> = persisted.dreams.iter().collect();
             let sorted_federations: BTreeMap<_, _> = persisted.federations.iter().collect();
             let sorted_souls: BTreeMap<_, _> = persisted.soul_archive.iter().collect();
+            let canonical_indexes = canonicalize_json(serde_json::to_value(&persisted.indexes)?);
 
             let encoded_state = serde_json::to_vec(&(
                 &sorted_goals,
@@ -115,7 +135,7 @@ impl PlanningEngine {
                 &sorted_dreams,
                 &sorted_federations,
                 &sorted_souls,
-                &persisted.indexes,
+                canonical_indexes,
             ))?;
             let computed = blake3::hash(&encoded_state);
             if *computed.as_bytes() != persisted.header.checksum {
@@ -166,6 +186,7 @@ impl PlanningEngine {
         let sorted_dreams: BTreeMap<_, _> = self.dream_store.iter().collect();
         let sorted_federations: BTreeMap<_, _> = self.federation_store.iter().collect();
         let sorted_souls: BTreeMap<_, _> = self.soul_archive.iter().collect();
+        let canonical_indexes = canonicalize_json(serde_json::to_value(&self.indexes)?);
 
         let encoded_state = serde_json::to_vec(&(
             &sorted_goals,
@@ -174,7 +195,7 @@ impl PlanningEngine {
             &sorted_dreams,
             &sorted_federations,
             &sorted_souls,
-            &self.indexes,
+            canonical_indexes,
         ))?;
 
         // R1: Compute real blake3 checksum of payload
