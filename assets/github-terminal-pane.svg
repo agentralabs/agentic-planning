@@ -17,13 +17,13 @@
   <circle cx="68" cy="112" r="6" fill="#ef4444"/>
   <circle cx="90" cy="112" r="6" fill="#f59e0b"/>
   <circle cx="112" cy="112" r="6" fill="#22c55e"/>
-  <text x="1220" y="117" font-family="'JetBrains Mono', monospace" font-size="11" fill="#f2f1ea" letter-spacing="2">AGENTICTIME / .ATIME</text>
+  <text x="1200" y="117" font-family="'JetBrains Mono', monospace" font-size="11" fill="#f2f1ea" letter-spacing="2">AGENTICPLANNING / .APLAN</text>
 
   <rect x="46" y="132" width="1308" height="240" fill="#080808"/>
   <text x="72" y="168" font-family="'JetBrains Mono', monospace" font-size="18" fill="#e5e5e5">&gt; curl -fsSL https://agentralabs.tech/install/planning | bash</text>
-  <text x="72" y="202" font-family="'JetBrains Mono', monospace" font-size="18" fill="#e5e5e5">&gt; agentic-planning-mcp --file ~/.project.aplan serve</text>
-  <text x="72" y="236" font-family="'JetBrains Mono', monospace" font-size="18" fill="#e5e5e5">&gt; aplan deadline add "Ship v1.0" 2026-03-15T17:00:00Z --priority high</text>
-  <text x="72" y="270" font-family="'JetBrains Mono', monospace" font-size="18" fill="#e5e5e5">&gt; aplan schedule list --format json</text>
+  <text x="72" y="202" font-family="'JetBrains Mono', monospace" font-size="18" fill="#e5e5e5">&gt; aplan goal create "Ship planning engine" --intention "Persistent infra"</text>
+  <text x="72" y="236" font-family="'JetBrains Mono', monospace" font-size="18" fill="#e5e5e5">&gt; aplan decision create --goal g-001 --question "Which runtime?"</text>
+  <text x="72" y="270" font-family="'JetBrains Mono', monospace" font-size="18" fill="#e5e5e5">&gt; aplan singularity --file strategy.aplan</text>
   <text x="72" y="304" font-family="'JetBrains Mono', monospace" font-size="18" fill="#ea580c">&gt; stack.status = READY</text>
   <text x="72" y="338" font-family="'JetBrains Mono', monospace" font-size="18" fill="#ea580c">_</text>
 </svg>

@@ -21,12 +21,12 @@
   <rect width="1200" height="560" fill="url(#dotgrid)"/>
 
   <line x1="26" y1="28" x2="1174" y2="28" stroke="#111111"/>
-  <text x="30" y="20" class="mono muted" font-size="12" letter-spacing="2.2">// SECTION: AGENTICTIME.ARCH</text>
+  <text x="30" y="20" class="mono muted" font-size="12" letter-spacing="2.2">// SECTION: AGENTICPLANNING.ARCH</text>
   <text x="1168" y="20" text-anchor="end" class="mono muted" font-size="12" letter-spacing="2">TICK:0101</text>
 
   <rect x="26" y="46" width="1148" height="492" class="panel"/>
 
-  <text x="600" y="84" text-anchor="middle" class="mono ink" font-size="24" letter-spacing="3" font-weight="700">AGENTICTIME ARCHITECTURE</text>
+  <text x="600" y="84" text-anchor="middle" class="mono ink" font-size="24" letter-spacing="3" font-weight="700">AGENTICPLANNING ARCHITECTURE</text>
 
   <rect x="70" y="106" width="220" height="54" rx="10" class="card"/>
   <text x="180" y="139" text-anchor="middle" class="mono ink" font-size="16" font-weight="700">Claude / Cursor</text>
@@ -51,40 +51,40 @@
   <line x1="600" y1="220" x2="600" y2="242" class="wire-soft"/>
 
   <rect x="70" y="242" width="1060" height="258" rx="12" class="card"/>
-  <text x="92" y="268" class="mono muted" font-size="14" letter-spacing="1.6">AGENTIC-TIME CORE (Rust)</text>
+  <text x="92" y="268" class="mono muted" font-size="14" letter-spacing="1.6">AGENTIC-PLANNING CORE (Rust)</text>
 
   <rect x="92" y="284" width="250" height="68" rx="8" class="card-accent"/>
-  <text x="217" y="312" text-anchor="middle" class="mono ink" font-size="16" font-weight="700">Temporal Engine</text>
-  <text x="217" y="334" text-anchor="middle" class="mono muted" font-size="11">deadlines + schedules + sequences</text>
+  <text x="217" y="312" text-anchor="middle" class="mono ink" font-size="16" font-weight="700">Goal Engine</text>
+  <text x="217" y="334" text-anchor="middle" class="mono muted" font-size="11">goals + hierarchy + physics + drift</text>
 
   <rect x="362" y="284" width="250" height="68" rx="8" class="card-accent"/>
-  <text x="487" y="312" text-anchor="middle" class="mono ink" font-size="16" font-weight="700">Decay Models</text>
-  <text x="487" y="334" text-anchor="middle" class="mono muted" font-size="11">linear / exponential / half-life / step</text>
+  <text x="487" y="312" text-anchor="middle" class="mono ink" font-size="16" font-weight="700">Decision Engine</text>
+  <text x="487" y="334" text-anchor="middle" class="mono muted" font-size="11">forks + shadows + counterfactuals</text>
 
   <rect x="632" y="284" width="250" height="68" rx="8" class="card-accent"/>
-  <text x="757" y="312" text-anchor="middle" class="mono ink" font-size="16" font-weight="700">Duration Engine</text>
-  <text x="757" y="334" text-anchor="middle" class="mono muted" font-size="11">PERT estimation + confidence intervals</text>
+  <text x="757" y="312" text-anchor="middle" class="mono ink" font-size="16" font-weight="700">Commitment Tracker</text>
+  <text x="757" y="334" text-anchor="middle" class="mono muted" font-size="11">promises + stakes + deadline physics</text>
 
   <rect x="902" y="284" width="206" height="68" rx="8" class="card-accent"/>
-  <text x="1005" y="312" text-anchor="middle" class="mono ink" font-size="16" font-weight="700">Entity Types</text>
-  <text x="1005" y="334" text-anchor="middle" class="mono muted" font-size="11">deadline / schedule / sequence / decay</text>
+  <text x="1005" y="312" text-anchor="middle" class="mono ink" font-size="16" font-weight="700">Query Engine</text>
+  <text x="1005" y="334" text-anchor="middle" class="mono muted" font-size="11">singularity + prophecy + urgency</text>
 
   <line x1="600" y1="352" x2="600" y2="372" class="wire-accent"/>
 
   <rect x="92" y="372" width="322" height="66" rx="8" class="card"/>
   <text x="253" y="398" text-anchor="middle" class="mono ink" font-size="16" font-weight="700">Artifact Layer</text>
-  <text x="253" y="419" text-anchor="middle" class="mono muted" font-size="12">portable .aplan binary temporal files</text>
+  <text x="253" y="419" text-anchor="middle" class="mono muted" font-size="12">portable .aplan binary intention files</text>
 
   <rect x="438" y="372" width="322" height="66" rx="8" class="card"/>
-  <text x="599" y="398" text-anchor="middle" class="mono ink" font-size="16" font-weight="700">Conflict Detection</text>
-  <text x="599" y="419" text-anchor="middle" class="mono muted" font-size="12">schedule overlap, deadline dependency</text>
+  <text x="599" y="398" text-anchor="middle" class="mono ink" font-size="16" font-weight="700">Operational Safety</text>
+  <text x="599" y="419" text-anchor="middle" class="mono muted" font-size="12">validation, locking, audit, isolation</text>
 
   <rect x="784" y="372" width="324" height="66" rx="8" class="card"/>
   <text x="946" y="398" text-anchor="middle" class="mono ink" font-size="16" font-weight="700">Integration Surface</text>
-  <text x="946" y="419" text-anchor="middle" class="mono muted" font-size="12">AgenticMemory links + cross-agent workflows</text>
+  <text x="946" y="419" text-anchor="middle" class="mono muted" font-size="12">bridges to memory, time, contract, identity</text>
 
   <rect x="92" y="452" width="1016" height="30" rx="6" class="card-dark"/>
-  <text x="600" y="472" text-anchor="middle" class="mono" fill="#f5f4ee" font-size="12" letter-spacing="1.2">5 entity types · 19 MCP tools · sub-millisecond operations · one binary temporal file</text>
+  <text x="600" y="472" text-anchor="middle" class="mono" fill="#f5f4ee" font-size="12" letter-spacing="1.2">goals · decisions · commitments · dreams · 13 MCP tools · one binary intention file</text>
 
   <circle cx="1142" cy="524" r="5" class="accent"/>
 </svg>
