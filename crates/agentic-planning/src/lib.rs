@@ -78,6 +78,21 @@ impl PlanningEngine {
         &mut self.audit_log
     }
 
+    /// Iterate over all goals (for ghost bridge context).
+    pub fn goals(&self) -> impl Iterator<Item = &Goal> {
+        self.goal_store.values()
+    }
+
+    /// Iterate over all decisions (for ghost bridge context).
+    pub fn decisions(&self) -> impl Iterator<Item = &Decision> {
+        self.decision_store.values()
+    }
+
+    /// Iterate over all commitments (for ghost bridge context).
+    pub fn commitments(&self) -> impl Iterator<Item = &Commitment> {
+        self.commitment_store.values()
+    }
+
     pub(crate) fn mark_dirty(&mut self) {
         self.dirty = true;
     }

@@ -208,6 +208,11 @@ impl PlanningMcpServer {
         self.engine.save()
     }
 
+    /// Borrow the underlying engine (for ghost bridge context building).
+    pub fn engine(&self) -> &PlanningEngine {
+        &self.engine
+    }
+
     /// Handle a raw JSON-RPC message string from stdio transport.
     ///
     /// Returns the serialised JSON-RPC response, or empty string for notifications.

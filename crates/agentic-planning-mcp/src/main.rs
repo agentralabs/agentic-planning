@@ -7,11 +7,14 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 
 use agentic_planning::PlanningEngine;
-use agentic_planning_mcp::{PlanningMcpServer, MAX_CONTENT_LENGTH_BYTES};
+use agentic_planning_mcp::{ghost_bridge, PlanningMcpServer, MAX_CONTENT_LENGTH_BYTES};
 
 fn main() {
     let engine = PlanningEngine::in_memory();
     let mut server = PlanningMcpServer::new(engine);
+
+    // Ghost bridge: sync planning context to AI coding assistants.
+    let mut ghost = ghost_bridge::GhostBridge::new();
 
     // Install signal handler for graceful shutdown.
     let shutdown = Arc::new(AtomicBool::new(false));
@@ -29,7 +32,18 @@ fn main() {
     let mut reader = BufReader::new(stdin.lock());
     let mut writer = stdout.lock();
 
-    run_stdio_loop(&mut reader, &mut writer, &mut server, &shutdown);
+    run_stdio_loop(
+        &mut reader,
+        &mut writer,
+        &mut server,
+        &shutdown,
+        &mut ghost,
+    );
+
+    // Final ghost sync before exit.
+    if let Some(ref mut g) = ghost {
+        g.sync(server.engine());
+    }
 
     // Graceful shutdown: persist engine state before exit.
     if let Err(e) = server.save() {
@@ -42,6 +56,7 @@ fn run_stdio_loop<R: BufRead + Read, W: Write>(
     writer: &mut W,
     server: &mut PlanningMcpServer,
     shutdown: &AtomicBool,
+    ghost: &mut Option<ghost_bridge::GhostBridge>,
 ) {
     let mut line = String::new();
     let mut content_length: Option<usize> = None;
@@ -94,6 +109,10 @@ fn run_stdio_loop<R: BufRead + Read, W: Write>(
                 if !response.is_empty() && write_framed(writer, &response).is_err() {
                     break;
                 }
+                // Ghost sync after each request.
+                if let Some(ref mut g) = ghost {
+                    g.sync(server.engine());
+                }
                 content_length = None;
                 continue;
             }
@@ -115,6 +134,10 @@ fn run_stdio_loop<R: BufRead + Read, W: Write>(
         }
         if writer.flush().is_err() {
             break;
+        }
+        // Ghost sync after each request.
+        if let Some(ref mut g) = ghost {
+            g.sync(server.engine());
         }
     }
 }
