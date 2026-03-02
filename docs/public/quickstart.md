@@ -13,6 +13,14 @@ Get from zero to a working planning session in under 10 minutes.
 
 ## Step 1: Install
 
+**One-liner (recommended):**
+
+```bash
+curl -fsSL https://agentralabs.tech/install/planning | bash
+```
+
+**Or via Cargo:**
+
 ```bash
 cargo install agentic-planning-cli
 ```

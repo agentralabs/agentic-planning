@@ -13,7 +13,7 @@ assert_file() {
 assert_contains() {
   local pattern="$1"
   local file="$2"
-  rg -nF "$pattern" "$file" >/dev/null || fail "Missing pattern '$pattern' in $file"
+  grep -rqF "$pattern" "$file" || fail "Missing pattern '$pattern' in $file"
 }
 
 assert_file "docs/public/primary-problem-coverage.md"

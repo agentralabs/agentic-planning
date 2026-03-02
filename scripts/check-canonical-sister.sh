@@ -17,7 +17,7 @@ assert_dir() {
 assert_contains() {
   local pattern="$1"
   local target="$2"
-  rg -nF "$pattern" "$target" >/dev/null || fail "Missing required pattern: ${pattern}"
+  grep -rqF "$pattern" "$target" || fail "Missing required pattern: ${pattern}"
 }
 
 assert_file "docs/ecosystem/CANONICAL_SISTER_KIT.md"

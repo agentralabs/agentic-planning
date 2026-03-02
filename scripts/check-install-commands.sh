@@ -9,7 +9,7 @@ fail() {
 assert_contains() {
   local pattern="$1"
   local file="$2"
-  rg -nF "$pattern" "$file" >/dev/null || fail "Missing pattern '${pattern}' in ${file}"
+  grep -rqF "$pattern" "$file" || fail "Missing pattern '${pattern}' in ${file}"
 }
 
 assert_contains 'curl -fsSL https://agentralabs.tech/install/planning' README.md

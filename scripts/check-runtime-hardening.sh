@@ -9,7 +9,7 @@ fail() {
 assert_contains() {
   local pattern="$1"
   local target="$2"
-  rg -nF "$pattern" "$target" >/dev/null || fail "Missing pattern '$pattern' in $target"
+  grep -rqF "$pattern" "$target" || fail "Missing pattern '$pattern' in $target"
 }
 
 MCP_SRC="crates/agentic-planning-mcp/src"
