@@ -68,6 +68,8 @@ dependencies = [
 [[package]]
 name = "agentic-sdk"
 version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5b40c6baf0f51db5498d8310f8811ff3d08ae694ff0cc0f9d47f0458794b61b6"
 dependencies = [
  "base64",
  "blake3",
