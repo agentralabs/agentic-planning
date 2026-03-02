@@ -114,7 +114,11 @@ fn build_planning_context(engine: &PlanningEngine) -> String {
     if !blocked.is_empty() {
         md.push_str("## Blocked Goals\n\n");
         for g in blocked.iter().take(5) {
-            md.push_str(&format!("- `{}` — {}\n", short_id(&g.id.0), truncate(&g.title, 80)));
+            md.push_str(&format!(
+                "- `{}` — {}\n",
+                short_id(&g.id.0),
+                truncate(&g.title, 80)
+            ));
         }
         md.push('\n');
     }
@@ -122,13 +126,23 @@ fn build_planning_context(engine: &PlanningEngine) -> String {
     // Pending decisions
     let pending_decisions: Vec<_> = engine
         .decisions()
-        .filter(|d| matches!(d.status, agentic_planning::DecisionStatus::Pending | agentic_planning::DecisionStatus::Deliberating))
+        .filter(|d| {
+            matches!(
+                d.status,
+                agentic_planning::DecisionStatus::Pending
+                    | agentic_planning::DecisionStatus::Deliberating
+            )
+        })
         .collect();
     if !pending_decisions.is_empty() {
         md.push_str("## Pending Decisions\n\n");
         for d in pending_decisions.iter().take(10) {
             let q = truncate(&d.question.question, 80);
-            md.push_str(&format!("- `{}` [{:?}] — {q}\n", short_id(&d.id.0), d.status));
+            md.push_str(&format!(
+                "- `{}` [{:?}] — {q}\n",
+                short_id(&d.id.0),
+                d.status
+            ));
         }
         md.push('\n');
     }
@@ -155,7 +169,13 @@ fn build_planning_context(engine: &PlanningEngine) -> String {
     // Active commitments
     let active_commitments: Vec<_> = engine
         .commitments()
-        .filter(|c| matches!(c.status, agentic_planning::CommitmentStatus::Active | agentic_planning::CommitmentStatus::AtRisk))
+        .filter(|c| {
+            matches!(
+                c.status,
+                agentic_planning::CommitmentStatus::Active
+                    | agentic_planning::CommitmentStatus::AtRisk
+            )
+        })
         .collect();
     if !active_commitments.is_empty() {
         md.push_str("## Active Commitments\n\n");

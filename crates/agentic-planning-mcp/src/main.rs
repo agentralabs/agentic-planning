@@ -32,13 +32,7 @@ fn main() {
     let mut reader = BufReader::new(stdin.lock());
     let mut writer = stdout.lock();
 
-    run_stdio_loop(
-        &mut reader,
-        &mut writer,
-        &mut server,
-        &shutdown,
-        &mut ghost,
-    );
+    run_stdio_loop(&mut reader, &mut writer, &mut server, &shutdown, &mut ghost);
 
     // Final ghost sync before exit.
     if let Some(ref mut g) = ghost {
