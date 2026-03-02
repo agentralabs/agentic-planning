@@ -25,6 +25,7 @@ REPO_NAME="agentic-planning"
 BINARY_MCP="agentic-planning-mcp"
 BINARY_CLI="aplan"
 DATA_DIR="${HOME}/.agentic-planning"
+SERVER_ARGS_TEXT='["--mode", "stdio"]'
 
 # ── Colour / UI helpers ────────────────────────────────────────────────
 green()  { printf "\033[0;32m%s\033[0m\n" "$*"; }
@@ -296,7 +297,7 @@ step "Configuring MCP clients..."
 
 if [[ "$PROFILE" == "server" ]]; then
   yellow "  Server profile: skipping MCP client configuration."
-  yellow "  Server auth will be enforced (set AGENTIC_AUTH_TOKEN)."
+  yellow "  Server auth will be enforced (set AGENTIC_TOKEN)."
 else
   # MCP server config entry to merge
   MCP_ENTRY='{
@@ -476,7 +477,7 @@ case "$PROFILE" in
 # agentic-planning server configuration
 # Auth is required in server profile
 AGENTIC_AUTH_MODE=required
-# AGENTIC_AUTH_TOKEN=<set-your-secret-here>
+# AGENTIC_TOKEN=<set-your-secret-here>
 EOF
       green "  ✓ Server profile: auth enforced"
       yellow "  Set your auth token in: ${SERVER_ENV}"
@@ -543,24 +544,33 @@ else
   done
 
   echo ""
+  echo "MCP client summary:"
+  echo "  Universal MCP entry (works in any MCP client):"
+  echo "  command: ${LAUNCHER}"
+  echo "  args: ${SERVER_ARGS_TEXT}"
+  echo ""
+  echo "Quick terminal check:"
+  echo "  aplan version"
+
+  echo ""
   echo "Next steps:"
   case "$PROFILE" in
     desktop|terminal)
       echo "  1. Restart your MCP client (Claude Desktop, Cursor, etc.)"
       echo "  2. Verify planning tools appear in the tool list"
       echo "  3. Try: aplan version"
-      echo ""
-      echo "  Manual MCP configuration (if auto-config didn't apply):"
-      echo "    command: ${LAUNCHER}"
-      echo "    args:    [\"--mode\", \"stdio\"]"
+      echo "  4. After restart, confirm 'agentic-planning' appears in your MCP server list."
+      echo "  5. Optional feedback: open https://github.com/agentralabs/agentic-planning/issues"
       ;;
     server)
       echo "  1. Set your auth token:"
-      echo "     echo 'AGENTIC_AUTH_TOKEN=your-secret' >> ${DATA_DIR}/server.env"
+      echo "     export AGENTIC_TOKEN=your-secret"
       echo "  2. Start the server:"
       echo "     systemctl --user start agentic-planning"
       echo "  3. Or run manually:"
-      echo "     source ${DATA_DIR}/server.env && ${BINARY_MCP} --mode stdio"
+      echo "     AGENTIC_TOKEN=your-secret ${BINARY_MCP} --mode stdio"
+      echo "  4. After restart, confirm 'agentic-planning' appears in your MCP server list."
+      echo "  5. Optional feedback: open https://github.com/agentralabs/agentic-planning/issues"
       ;;
   esac
 fi

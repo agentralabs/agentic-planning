@@ -14,7 +14,13 @@ Requires Rust 1.75+:
 cargo install agentic-planning-cli
 ```
 
-This builds and installs the `aplan` binary to `~/.cargo/bin/`. The binary includes the CLI, MCP server (`aplan serve`), and daemon mode.
+For the standalone MCP server binary:
+
+```bash
+cargo install agentic-planning-mcp
+```
+
+This builds and installs the `aplan` binary to `~/.cargo/bin/`. The binary includes the CLI, MCP server (`aplan serve`), and daemon mode. The standalone `agentic-planning-mcp` binary is useful for deployments that only need the MCP server.
 
 ## Pre-built Binary
 
