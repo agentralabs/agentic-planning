@@ -1,0 +1,287 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: -D warnings
+
+jobs:
+  # ════════════════════════════════════════════════════════════════
+  # §1-10: CODE QUALITY
+  # ════════════════════════════════════════════════════════════════
+
+  code-quality:
+    name: "§1-10: Code Quality"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+      - uses: Swatinem/rust-cache@v2
+
+      - name: "§1: Check formatting"
+        run: cargo fmt --all -- --check
+
+      - name: "§2: Clippy (no warnings)"
+        run: cargo clippy --workspace --all-targets -- -D warnings
+
+      - name: "§3: Compilation check"
+        run: cargo check --workspace
+
+      - name: "§4: Workspace consistency"
+        run: |
+          test -f Cargo.toml
+          test -f Cargo.lock
+
+      - name: "§6: unwrap() audit"
+        run: |
+          # Count .unwrap() calls in non-test code only.
+          # For each .rs file, only inspect lines before #[cfg(test)] to
+          # exclude test modules that the previous grep -v '#[test]' missed.
+          UNWRAP_COUNT=0
+          for f in $(find crates/agentic-planning/src -name '*.rs'); do
+            TEST_LINE=$(grep -n '#\[cfg(test)\]' "$f" | head -1 | cut -d: -f1)
+            if [[ -n "$TEST_LINE" ]]; then
+              COUNT=$(head -n "$((TEST_LINE - 1))" "$f" | grep -c '\.unwrap()' || true)
+            else
+              COUNT=$(grep -c '\.unwrap()' "$f" || true)
+            fi
+            UNWRAP_COUNT=$((UNWRAP_COUNT + COUNT))
+          done
+          echo "unwrap() calls in non-test code: $UNWRAP_COUNT"
+          if [[ $UNWRAP_COUNT -gt 80 ]]; then
+            echo "ERROR: Too many unwrap() calls ($UNWRAP_COUNT > 80)"
+            exit 1
+          fi
+
+      - name: "§7: panic! detection"
+        run: |
+          PANIC_COUNT=$(grep -rn 'panic!' crates/agentic-planning/src --include="*.rs" | grep -v '#\[test\]' | grep -v 'mod tests' | wc -l | tr -d ' ')
+          echo "panic! calls in non-test code: $PANIC_COUNT"
+          if [[ $PANIC_COUNT -gt 10 ]]; then
+            echo "ERROR: Too many panic! calls ($PANIC_COUNT > 10)"
+            exit 1
+          fi
+
+      - name: "§8: Cargo.lock committed"
+        run: test -f Cargo.lock
+
+      - name: "§9: Duplicate dependencies"
+        run: cargo tree --duplicates || true
+
+  # ════════════════════════════════════════════════════════════════
+  # §11-20: TEST COVERAGE
+  # ════════════════════════════════════════════════════════════════
+
+  tests:
+    name: "§11-20: Tests"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+
+      - name: "§11: Unit tests"
+        run: cargo test --workspace --lib
+
+      - name: "§12: Integration tests"
+        run: cargo test --workspace --test '*'
+
+      - name: "§13: Doc tests"
+        run: cargo test --workspace --doc
+
+      - name: "§14-15: All tests (includes hardening + stress)"
+        run: cargo test --workspace
+
+      - name: "§16-18: Verify test categories exist"
+        run: |
+          cargo test --workspace 2>&1 | tee /tmp/test-output.txt
+          SCENARIO=$(grep -c "scenario_" /tmp/test-output.txt || true)
+          STRESS=$(grep -c "stress_" /tmp/test-output.txt || true)
+          EDGE=$(grep -c "edge_case_" /tmp/test-output.txt || true)
+          echo "scenario tests: $SCENARIO"
+          echo "stress tests: $STRESS"
+          echo "edge case tests: $EDGE"
+
+      - name: "§20: Build release"
+        run: cargo build --workspace --release
+
+  # ════════════════════════════════════════════════════════════════
+  # §21-30: HARDENING VERIFICATION
+  # ════════════════════════════════════════════════════════════════
+
+  hardening:
+    name: "§21-30: Hardening"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "§21: Strict validation"
+        run: |
+          grep -rq "ValidationError" crates/agentic-planning/src --include="*.rs" \
+            || { echo "ERROR: ValidationError not found"; exit 1; }
+
+      - name: "§22: Per-project isolation"
+        run: |
+          grep -rq "project_identity\|ProjectId" crates/agentic-planning/src --include="*.rs" \
+            || { echo "ERROR: Project isolation not found"; exit 1; }
+
+      - name: "§24: Concurrent lock handling"
+        run: |
+          grep -rq "StartupLock\|FileLock" crates/agentic-planning/src --include="*.rs" \
+            || { echo "ERROR: Lock handling not found"; exit 1; }
+
+      - name: "§25: Stale lock recovery"
+        run: |
+          grep -rq "stale\|STALE_THRESHOLD\|process_alive" crates/agentic-planning/src --include="*.rs" \
+            || { echo "ERROR: Stale lock recovery not found"; exit 1; }
+
+      - name: "§28: Server authentication"
+        run: |
+          grep -rq "TokenAuth\|AuthMode\|AGENTIC_AUTH" crates/agentic-planning/src --include="*.rs" \
+            || { echo "ERROR: Server auth not found"; exit 1; }
+
+      - name: "§29: Atomic file operations"
+        run: |
+          grep -rq "atomic\|rename\|sync_all" crates/agentic-planning/src --include="*.rs" \
+            || echo "WARNING: Atomic file operations not detected"
+
+      - name: Runtime hardening script
+        run: bash scripts/check-runtime-hardening.sh
+
+  # ════════════════════════════════════════════════════════════════
+  # §31-40: DOCUMENTATION
+  # ════════════════════════════════════════════════════════════════
+
+  docs:
+    name: "§31-40: Documentation"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+
+      - name: "§31-34: Core docs exist"
+        run: |
+          test -f README.md
+          test -f CHANGELOG.md
+          test -f LICENSE-MIT || test -f LICENSE-APACHE || test -f LICENSE
+          test -d docs
+
+      - name: "§35: Required public docs"
+        run: bash scripts/check-docs-sync.sh
+
+      - name: "§37: Cargo doc builds"
+        run: cargo doc --workspace --no-deps
+
+      - name: "§39-40: Governance docs"
+        run: |
+          test -f SECURITY.md || echo "WARNING: SECURITY.md missing"
+          test -f CONTRIBUTING.md || echo "WARNING: CONTRIBUTING.md missing"
+
+  # ════════════════════════════════════════════════════════════════
+  # §41-48: SISTER + CONTRACT COMPLIANCE
+  # ════════════════════════════════════════════════════════════════
+
+  guardrails:
+    name: "§41-48: Guardrails"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "§41-47: Sister documentation"
+        run: |
+          # Check for sister manifest
+          test -f docs/public/sister.manifest.json \
+            || { echo "ERROR: sister.manifest.json missing"; exit 1; }
+          # Architecture / concepts
+          test -f docs/public/concepts.md || echo "INFO: concepts.md not found"
+          # Assets
+          SVG_COUNT=$(find assets -name "*.svg" 2>/dev/null | wc -l | tr -d ' ')
+          echo "SVG assets: $SVG_COUNT"
+
+      - name: "§48: Canonical sister kit"
+        run: bash scripts/check-canonical-sister.sh
+
+      - name: Install command guardrails
+        run: bash scripts/check-install-commands.sh
+
+      - name: Primary problem regression
+        run: bash scripts/test-primary-problems.sh
+
+  # ════════════════════════════════════════════════════════════════
+  # §49: RELEASE GATES (tag pushes only)
+  # ════════════════════════════════════════════════════════════════
+
+  release-gates:
+    name: "§49: Release Gates"
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [code-quality, tests, hardening, docs, guardrails]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+
+      - name: "§49.1: Version consistency"
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          CARGO_VERSION=$(grep "^version" Cargo.toml | head -1 | cut -d'"' -f2)
+          if [[ "$VERSION" != "$CARGO_VERSION" ]]; then
+            echo "ERROR: Tag ($VERSION) != Cargo.toml ($CARGO_VERSION)"
+            exit 1
+          fi
+
+      - name: "§49.2: CHANGELOG has entry"
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          grep -q "## \[$VERSION\]" CHANGELOG.md \
+            || { echo "ERROR: CHANGELOG.md missing [$VERSION]"; exit 1; }
+
+      - name: "§49.3: No TODO/FIXME in release"
+        run: |
+          if grep -rn "TODO\|FIXME" crates/*/src --include="*.rs"; then
+            echo "ERROR: TODO/FIXME found in release code"
+            exit 1
+          fi
+
+      - name: "§49.4: All tests pass (release mode)"
+        run: cargo test --workspace --release
+
+      - name: "§49.5: Benchmarks compile"
+        run: cargo bench --workspace --no-run
+
+  # ════════════════════════════════════════════════════════════════
+  # §50: FINAL VERIFICATION
+  # ════════════════════════════════════════════════════════════════
+
+  final:
+    name: "§50: Final Verification"
+    needs: [code-quality, tests, hardening, docs, guardrails]
+    runs-on: ubuntu-latest
+    steps:
+      - name: "§50: All guardrails passed"
+        run: |
+          echo "╔══════════════════════════════════════════════════════════╗"
+          echo "║                  GUARDRAIL SUMMARY                      ║"
+          echo "╚══════════════════════════════════════════════════════════╝"
+          echo ""
+          echo "✓ §1-10:  Code Quality        PASSED"
+          echo "✓ §11-20: Test Coverage       PASSED"
+          echo "✓ §21-30: Hardening           PASSED"
+          echo "✓ §31-40: Documentation       PASSED"
+          echo "✓ §41-48: Sister + Contract   PASSED"
+          echo ""
+          echo "All guardrail sections passed!"

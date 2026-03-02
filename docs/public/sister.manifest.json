@@ -1,0 +1,31 @@
+{
+  "key": "planning",
+  "name": "AgenticPlanning",
+  "include_landing": true,
+  "page_ids": [
+    "overview",
+    "experience-with-vs-without",
+    "quickstart",
+    "installation",
+    "command-surface",
+    "runtime-install-sync",
+    "integration-guide",
+    "concepts",
+    "api-reference",
+    "cli-reference",
+    "ffi-reference",
+    "mcp-tools",
+    "mcp-resources",
+    "mcp-prompts",
+    "file-format",
+    "architecture",
+    "configuration",
+    "benchmarks",
+    "faq",
+    "troubleshooting",
+    "playbooks-agent-integration",
+    "initial-problem-coverage",
+    "primary-problem-coverage"
+  ],
+  "slug_by_id": {}
+}

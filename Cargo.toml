@@ -1,0 +1,37 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/agentic-planning",
+    "crates/agentic-planning-mcp",
+    "crates/agentic-planning-cli",
+    "crates/agentic-planning-ffi",
+    "crates/agentic-planning-bridges",
+]
+exclude = [
+    "npm/wasm",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+license = "MIT"
+repository = "https://github.com/agentralabs/agentic-planning"
+homepage = "https://agentralabs.tech"
+authors = ["Agentra Labs <contact@agentralabs.tech>"]
+description = "Persistent intention infrastructure for AI agents — goals with physics, decisions with memory, commitments with trust"
+keywords = ["planning", "ai-agents", "goals", "decisions", "mcp"]
+categories = ["command-line-utilities", "data-structures"]
+readme = "README.md"
+documentation = "https://docs.rs/agentic-planning"
+
+[workspace.dependencies]
+chrono = { version = "0.4", features = ["serde"] }
+blake3 = "1.5"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "1.0"
+tokio = { version = "1.36", features = ["full"] }
+uuid = { version = "1.7", features = ["v4", "serde"] }
+clap = { version = "4.5", features = ["derive", "env"] }
+tempfile = "3"

@@ -1,0 +1,30 @@
+name: Install Command Guardrails
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "README.md"
+      - "docs/public/installation.md"
+      - "docs/public/quickstart.md"
+      - "scripts/install.sh"
+      - "scripts/check-install-commands.sh"
+      - ".github/workflows/install-command-guardrails.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "README.md"
+      - "docs/public/installation.md"
+      - "docs/public/quickstart.md"
+      - "scripts/install.sh"
+      - "scripts/check-install-commands.sh"
+      - ".github/workflows/install-command-guardrails.yml"
+
+jobs:
+  guardrails:
+    name: Install Command Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run install command guardrails
+        run: bash scripts/check-install-commands.sh

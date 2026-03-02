@@ -1,0 +1,13 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  release-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: bash scripts/release.sh ${GITHUB_REF_NAME#v}

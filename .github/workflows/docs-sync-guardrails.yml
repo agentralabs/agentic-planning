@@ -1,0 +1,23 @@
+name: Docs Sync Guardrails
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "scripts/check-docs-sync.sh"
+      - ".github/workflows/docs-sync-guardrails.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "scripts/check-docs-sync.sh"
+      - ".github/workflows/docs-sync-guardrails.yml"
+
+jobs:
+  validate-docs-sync:
+    name: validate-docs-sync
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash scripts/check-docs-sync.sh

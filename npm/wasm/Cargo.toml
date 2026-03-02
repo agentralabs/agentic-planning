@@ -1,0 +1,24 @@
+[package]
+name = "agentic-planning-wasm"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "WebAssembly bindings for AgenticPlanning"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+agentic-planning = { path = "../../crates/agentic-planning" }
+wasm-bindgen = "0.2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+getrandom = { version = "0.2", features = ["js"] }
+uuid = { version = "1.7", features = ["v4", "js"] }
+
+[workspace]
+
+[profile.release]
+opt-level = "s"
+lto = true

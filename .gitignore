@@ -1,0 +1,26 @@
+/target/
+**/*.rs.bk
+*.pdb
+.DS_Store
+*.swp
+*.swo
+*~
+docs/internal/
+ECOSYSTEM-CONVENTIONS.md
+
+# Local goals (internal only)
+goals/
+
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+python/tests/__pycache__/
+python/.pytest_cache/
+python/dist/
+npm/wasm/pkg/

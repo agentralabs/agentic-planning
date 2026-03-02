@@ -1,0 +1,23 @@
+name: Runtime Hardening Guardrails
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "crates/agentic-planning-mcp/**"
+      - "scripts/check-runtime-hardening.sh"
+      - ".github/workflows/runtime-hardening-guardrails.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "crates/agentic-planning-mcp/**"
+      - "scripts/check-runtime-hardening.sh"
+      - ".github/workflows/runtime-hardening-guardrails.yml"
+
+jobs:
+  validate-runtime-hardening:
+    name: validate-runtime-hardening
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash scripts/check-runtime-hardening.sh
