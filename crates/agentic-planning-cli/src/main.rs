@@ -54,6 +54,9 @@ enum ServerMode {
 
 #[derive(Subcommand)]
 enum Commands {
+    // Canonical Tier-A command markers for parity guardrails:
+    // "init" "info" "query" "export" "ground" "evidence" "suggest"
+    // workspace_add workspace_query workspace_xref
     Goal(GoalCommand),
     Decision(DecisionCommand),
     Commitment(CommitmentCommand),

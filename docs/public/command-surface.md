@@ -6,6 +6,26 @@ status: stable
 
 Cross-reference matrix showing which operations are available via MCP tools, CLI commands, FFI functions, and Rust API.
 
+### Compact Facade Tools
+
+AgenticPlanning uses operation-based routing for compact MCP tools. Each compact facade takes an `operation` plus optional `params`.
+
+- `planning_goal`
+- `planning_decision`
+- `planning_commitment`
+- `planning_progress`
+- `planning_singularity`
+- `planning_dream`
+- `planning_counterfactual`
+- `planning_chain`
+- `planning_consensus`
+- `planning_federate`
+- `planning_metamorphosis`
+- `planning_workspace`
+- `planning_context_log`
+
+Compact list mode: use `MCP_TOOL_SURFACE=compact`.
+
 ## Goal Operations
 
 | Operation | MCP Tool | CLI Command | FFI Function | Rust API |

@@ -1,5 +1,6 @@
 pub mod audit;
 pub mod auth;
+pub mod contracts;
 mod error;
 mod file_format;
 #[path = "indexes.rs"]

@@ -26,6 +26,7 @@ readme = "README.md"
 documentation = "https://docs.rs/agentic-planning"
 
 [workspace.dependencies]
+agentic-sdk = { version = "0.2.0", path = "../agentic-sdk" }
 chrono = { version = "0.4", features = ["serde"] }
 blake3 = "1.5"
 serde = { version = "1.0", features = ["derive"] }

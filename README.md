@@ -26,7 +26,7 @@
 </p>
 
 <p align="center">
-  <a href="#architecture">Architecture</a> · <a href="#quickstart">Quickstart</a> · <a href="#problems-solved">Problems Solved</a> · <a href="#how-it-works">How It Works</a> · <a href="#why-agentic-planning">Why</a> · <a href="#mcp-tools">MCP Tools</a> · <a href="#benchmarks">Benchmarks</a> · <a href="#install">Install</a> · <a href="docs/api-reference.md">API</a> · <a href="paper/paper-i-intention-format/agenticplanning-paper.pdf">Paper</a>
+  <a href="#architecture">Architecture</a> · <a href="#quickstart">Quickstart</a> · <a href="#problems-solved">Problems Solved</a> · <a href="#how-it-works">How It Works</a> · <a href="#why-agentic-planning">Why</a> · <a href="#mcp-tools">MCP Tools</a> · <a href="#benchmarks">Benchmarks</a> · <a href="#install">Install</a> · <a href="docs/api-reference.md">API</a> · <a href="paper/paper-i-intention-format/agenticplanning-paper.pdf">Papers</a>
 </p>
 
 ---

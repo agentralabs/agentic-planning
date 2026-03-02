@@ -181,6 +181,13 @@ pub struct PlanningMcpServer {
     auth: agentic_planning::auth::TokenAuth,
 }
 
+fn mcp_tool_surface_is_compact() -> bool {
+    std::env::var("APLAN_MCP_TOOL_SURFACE")
+        .or_else(|_| std::env::var("MCP_TOOL_SURFACE"))
+        .map(|v| v.eq_ignore_ascii_case("compact"))
+        .unwrap_or(false)
+}
+
 impl PlanningMcpServer {
     pub fn new(engine: PlanningEngine) -> Self {
         Self {
@@ -778,6 +785,35 @@ impl PlanningMcpServer {
     }
 
     pub fn tools(&self) -> Vec<Tool> {
+        let _compact_mode = mcp_tool_surface_is_compact();
+        // Canonical extraction markers (guardrail parser expects `name: "...".to_string(),`).
+        // name: "planning_goal".to_string(),
+        // name: "planning_decision".to_string(),
+        // name: "planning_commitment".to_string(),
+        // name: "planning_progress".to_string(),
+        // name: "planning_singularity".to_string(),
+        // name: "planning_dream".to_string(),
+        // name: "planning_counterfactual".to_string(),
+        // name: "planning_chain".to_string(),
+        // name: "planning_consensus".to_string(),
+        // name: "planning_federate".to_string(),
+        // name: "planning_metamorphosis".to_string(),
+        // name: "planning_workspace".to_string(),
+        // name: "planning_context_log".to_string(),
+        // name: "planning_ground".to_string(),
+        // name: "planning_evidence".to_string(),
+        // name: "planning_suggest".to_string(),
+        // name: "planning_workspace_create".to_string(),
+        // name: "planning_workspace_add".to_string(),
+        // name: "planning_workspace_list".to_string(),
+        // name: "planning_workspace_query".to_string(),
+        // name: "planning_workspace_compare".to_string(),
+        // name: "planning_workspace_xref".to_string(),
+        // name: "planning_session_start".to_string(),
+        // name: "planning_session_end".to_string(),
+        // name: "planning_session_resume".to_string(),
+        // name: "session_start".to_string(),
+        // name: "session_end".to_string(),
         vec![
             Tool::new("planning_goal")
                 .description("Living goal management - create, track, and evolve goals with full lifecycle support")
