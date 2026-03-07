@@ -4,9 +4,10 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
 pub enum ExtractionIntent {
     Exists,
+    #[default]
     IdsOnly,
     Summary,
     Fields(Vec<String>),
@@ -24,7 +25,7 @@ impl ExtractionIntent {
         }
     }
 
-    pub fn from_str(s: &str) -> Self {
+    pub fn parse_label(s: &str) -> Self {
         match s {
             "exists" => Self::Exists,
             "ids" | "ids_only" => Self::IdsOnly,
@@ -40,12 +41,6 @@ impl ExtractionIntent {
 
     pub fn includes_content(&self) -> bool {
         matches!(self, Self::Summary | Self::Fields(_) | Self::Full)
-    }
-}
-
-impl Default for ExtractionIntent {
-    fn default() -> Self {
-        Self::IdsOnly // Token-conservative default
     }
 }
 
