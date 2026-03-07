@@ -68,7 +68,9 @@ impl ScopedResult {
             Self::Ids(ids) => ids.len() as u64 * 5,
             Self::Summary(_) => 50,
             Self::Fields(f) => f.len() as u64 * 20,
-            Self::Full(v) => serde_json::to_string(v).map(|s| s.len() as u64 / 4).unwrap_or(500),
+            Self::Full(v) => serde_json::to_string(v)
+                .map(|s| s.len() as u64 / 4)
+                .unwrap_or(500),
             Self::Count(_) => 2,
         }
     }
@@ -96,6 +98,9 @@ pub fn apply_intent_many<T: Scopeable>(intent: &ExtractionIntent, items: &[T]) -
         ExtractionIntent::Exists => ScopedResult::Bool(!items.is_empty()),
         ExtractionIntent::IdsOnly => ScopedResult::Ids(items.iter().map(|i| i.id_str()).collect()),
         ExtractionIntent::Summary => ScopedResult::Count(items.len()),
-        _ => ScopedResult::Full(serde_json::json!(items.iter().map(|i| i.to_json()).collect::<Vec<_>>())),
+        _ => ScopedResult::Full(serde_json::json!(items
+            .iter()
+            .map(|i| i.to_json())
+            .collect::<Vec<_>>())),
     }
 }

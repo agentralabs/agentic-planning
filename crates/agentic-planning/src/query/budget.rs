@@ -10,11 +10,17 @@ pub struct TokenBudget {
 
 impl TokenBudget {
     pub fn new(max_tokens: u64) -> Self {
-        Self { max_tokens, used_tokens: 0 }
+        Self {
+            max_tokens,
+            used_tokens: 0,
+        }
     }
 
     pub fn unlimited() -> Self {
-        Self { max_tokens: u64::MAX, used_tokens: 0 }
+        Self {
+            max_tokens: u64::MAX,
+            used_tokens: 0,
+        }
     }
 
     pub fn remaining(&self) -> u64 {
@@ -43,7 +49,9 @@ impl TokenBudget {
     }
 
     pub fn utilization(&self) -> f64 {
-        if self.max_tokens == 0 || self.max_tokens == u64::MAX { return 0.0; }
+        if self.max_tokens == 0 || self.max_tokens == u64::MAX {
+            return 0.0;
+        }
         self.used_tokens as f64 / self.max_tokens as f64
     }
 }

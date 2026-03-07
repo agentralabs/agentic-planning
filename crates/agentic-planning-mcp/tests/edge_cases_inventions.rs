@@ -109,7 +109,11 @@ async fn test_02_all_tool_names_present() {
 async fn test_03_resource_count_is_9() {
     let server = fresh_server().await;
     let resources = server.resources();
-    assert_eq!(resources.len(), 9, "Planning must expose exactly 9 resources");
+    assert_eq!(
+        resources.len(),
+        9,
+        "Planning must expose exactly 9 resources"
+    );
 }
 
 #[tokio::test]
@@ -783,7 +787,10 @@ async fn test_55_goal_create_and_show() {
         .handle_tool("planning_goal", json!({"operation":"show","id":id}))
         .await
         .unwrap();
-    assert_eq!(shown.get("title").and_then(|v| v.as_str()), Some("Test Goal"));
+    assert_eq!(
+        shown.get("title").and_then(|v| v.as_str()),
+        Some("Test Goal")
+    );
 }
 
 #[tokio::test]
@@ -995,10 +1002,7 @@ async fn test_67_decision_crystallize() {
         .handle_tool("planning_decision", json!({"operation":"show","id":id}))
         .await
         .unwrap();
-    let path_id = show
-        .get("shadows")
-        .and_then(|v| v.as_array())
-        .unwrap()[0]
+    let path_id = show.get("shadows").and_then(|v| v.as_array()).unwrap()[0]
         .get("path")
         .and_then(|v| v.get("id"))
         .and_then(|v| v.as_str())
@@ -1026,10 +1030,7 @@ async fn test_67_decision_crystallize() {
 async fn test_68_decision_regret_empty() {
     let (mut s, id) = server_with_decision().await;
     let regret = s
-        .handle_tool(
-            "planning_decision",
-            json!({"operation":"regret","id":id}),
-        )
+        .handle_tool("planning_decision", json!({"operation":"regret","id":id}))
         .await
         .unwrap();
     // Server returns json!({"decision_id": id, "regret": decision.regret_score})
@@ -1047,10 +1048,7 @@ async fn test_69_decision_shadows() {
     .await
     .unwrap();
     let shadows = s
-        .handle_tool(
-            "planning_decision",
-            json!({"operation":"shadows","id":id}),
-        )
+        .handle_tool("planning_decision", json!({"operation":"shadows","id":id}))
         .await
         .unwrap();
     assert!(shadows.is_array());
@@ -1064,10 +1062,7 @@ async fn test_69_decision_shadows() {
 async fn test_70_commitment_show() {
     let (mut s, id) = server_with_commitment().await;
     let shown = s
-        .handle_tool(
-            "planning_commitment",
-            json!({"operation":"show","id":id}),
-        )
+        .handle_tool("planning_commitment", json!({"operation":"show","id":id}))
         .await
         .unwrap();
     assert_eq!(shown.get("id").and_then(|v| v.as_str()), Some(id.as_str()));
@@ -1357,7 +1352,11 @@ async fn test_85_dream_goal_and_interpret() {
         .handle_tool("planning_dream", json!({"operation":"goal","id":id}))
         .await
         .unwrap();
-    let dream_id = dream.get("id").and_then(|v| v.as_str()).unwrap().to_string();
+    let dream_id = dream
+        .get("id")
+        .and_then(|v| v.as_str())
+        .unwrap()
+        .to_string();
     let interpreted = s
         .handle_tool(
             "planning_dream",
@@ -1375,7 +1374,11 @@ async fn test_86_dream_insights() {
         .handle_tool("planning_dream", json!({"operation":"goal","id":id}))
         .await
         .unwrap();
-    let dream_id = dream.get("id").and_then(|v| v.as_str()).unwrap().to_string();
+    let dream_id = dream
+        .get("id")
+        .and_then(|v| v.as_str())
+        .unwrap()
+        .to_string();
     let insights = s
         .handle_tool(
             "planning_dream",
@@ -1475,10 +1478,7 @@ async fn test_91_workspace_create_switch_list() {
         .handle_tool("planning_workspace", json!({"operation":"list"}))
         .await
         .unwrap();
-    let ws = listed
-        .get("workspaces")
-        .and_then(|v| v.as_array())
-        .unwrap();
+    let ws = listed.get("workspaces").and_then(|v| v.as_array()).unwrap();
     assert!(!ws.is_empty());
 }
 
@@ -1674,10 +1674,7 @@ async fn stability_errors_dont_corrupt_state() {
         .handle_tool("planning_goal", json!({"operation":"show","id":id}))
         .await
         .unwrap();
-    assert_eq!(
-        shown.get("title").and_then(|v| v.as_str()),
-        Some("Stable")
-    );
+    assert_eq!(shown.get("title").and_then(|v| v.as_str()), Some("Stable"));
 }
 
 #[tokio::test]

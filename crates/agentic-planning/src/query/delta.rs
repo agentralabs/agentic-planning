@@ -27,7 +27,12 @@ pub struct DeltaResult<T> {
 
 impl<T> DeltaResult<T> {
     pub fn empty(version: u64) -> Self {
-        Self { changes: Vec::new(), from_version: version, to_version: version, has_more: false }
+        Self {
+            changes: Vec::new(),
+            from_version: version,
+            to_version: version,
+            has_more: false,
+        }
     }
 
     pub fn is_empty(&self) -> bool {
@@ -47,7 +52,10 @@ pub struct VersionedState {
 
 impl VersionedState {
     pub fn new() -> Self {
-        Self { version: 0, timestamps: Vec::new() }
+        Self {
+            version: 0,
+            timestamps: Vec::new(),
+        }
     }
 
     pub fn record_change(&mut self, id: impl Into<String>, change_type: ChangeType) {
@@ -61,7 +69,10 @@ impl VersionedState {
     }
 
     pub fn changes_since(&self, since_ts: i64) -> Vec<&(String, i64, ChangeType)> {
-        self.timestamps.iter().filter(|(_, ts, _)| *ts > since_ts).collect()
+        self.timestamps
+            .iter()
+            .filter(|(_, ts, _)| *ts > since_ts)
+            .collect()
     }
 
     pub fn changes_since_version(&self, since_version: u64) -> Vec<&(String, i64, ChangeType)> {
