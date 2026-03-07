@@ -822,28 +822,84 @@ impl PlanningMcpServer {
         vec![
             Tool::new("planning_goal")
                 .description("Living goal management - create, track, and evolve goals with full lifecycle support")
-                .param("operation", "string", "create|list|show|activate|progress|complete|abandon|pause|resume|block|unblock|decompose|link|tree|feelings|physics|dream|reincarnate", true),
+                .param("operation", "string", "create|list|show|activate|progress|complete|abandon|pause|resume|block|unblock|decompose|link|tree|feelings|physics|dream|reincarnate", true)
+
+                .param("include_content", "boolean", "Return full content (default: IDs only)", false)
+                .param("intent", "string", "Extraction intent level (exists|ids|summary|fields|full)", false)
+                .param("since", "integer", "Only return changes since this Unix timestamp", false)
+                .param("token_budget", "integer", "Maximum token budget for response", false)
+                .param("max_results", "integer", "Maximum number of results (default: 10)", false)
+                .param("cursor", "string", "Pagination cursor for next page", false),
             Tool::new("planning_decision")
                 .description("Decision crystallization with shadow path preservation")
-                .param("operation", "string", "create|option|crystallize|show|shadows|chain|archaeology|prophecy|counterfactual|regret|recrystallize", true),
+                .param("operation", "string", "create|option|crystallize|show|shadows|chain|archaeology|prophecy|counterfactual|regret|recrystallize", true)
+
+                .param("include_content", "boolean", "Return full content (default: IDs only)", false)
+                .param("intent", "string", "Extraction intent level (exists|ids|summary|fields|full)", false)
+                .param("since", "integer", "Only return changes since this Unix timestamp", false)
+                .param("token_budget", "integer", "Maximum token budget for response", false)
+                .param("max_results", "integer", "Maximum number of results (default: 10)", false)
+                .param("cursor", "string", "Pagination cursor for next page", false),
             Tool::new("planning_commitment")
                 .description("Weighted commitment management")
-                .param("operation", "string", "create|list|show|fulfill|break|renegotiate|entangle|inventory|due_soon|at_risk", true),
+                .param("operation", "string", "create|list|show|fulfill|break|renegotiate|entangle|inventory|due_soon|at_risk", true)
+
+                .param("include_content", "boolean", "Return full content (default: IDs only)", false)
+                .param("intent", "string", "Extraction intent level (exists|ids|summary|fields|full)", false)
+                .param("since", "integer", "Only return changes since this Unix timestamp", false)
+                .param("token_budget", "integer", "Maximum token budget for response", false)
+                .param("max_results", "integer", "Maximum number of results (default: 10)", false)
+                .param("cursor", "string", "Pagination cursor for next page", false),
             Tool::new("planning_progress")
                 .description("Progress physics")
-                .param("operation", "string", "momentum|gravity|blockers|echoes|forecast|velocity|trend", true),
+                .param("operation", "string", "momentum|gravity|blockers|echoes|forecast|velocity|trend", true)
+
+                .param("include_content", "boolean", "Return full content (default: IDs only)", false)
+                .param("intent", "string", "Extraction intent level (exists|ids|summary|fields|full)", false)
+                .param("since", "integer", "Only return changes since this Unix timestamp", false)
+                .param("token_budget", "integer", "Maximum token budget for response", false)
+                .param("max_results", "integer", "Maximum number of results (default: 10)", false)
+                .param("cursor", "string", "Pagination cursor for next page", false),
             Tool::new("planning_singularity")
                 .description("Intention singularity")
-                .param("operation", "string", "collapse|position|path|tensions|themes|center|vision", true),
+                .param("operation", "string", "collapse|position|path|tensions|themes|center|vision", true)
+
+                .param("include_content", "boolean", "Return full content (default: IDs only)", false)
+                .param("intent", "string", "Extraction intent level (exists|ids|summary|fields|full)", false)
+                .param("since", "integer", "Only return changes since this Unix timestamp", false)
+                .param("token_budget", "integer", "Maximum token budget for response", false)
+                .param("max_results", "integer", "Maximum number of results (default: 10)", false)
+                .param("cursor", "string", "Pagination cursor for next page", false),
             Tool::new("planning_dream")
                 .description("Dream surfaces")
-                .param("operation", "string", "goal|collective|interpret|insights|accuracy|history", true),
+                .param("operation", "string", "goal|collective|interpret|insights|accuracy|history", true)
+
+                .param("include_content", "boolean", "Return full content (default: IDs only)", false)
+                .param("intent", "string", "Extraction intent level (exists|ids|summary|fields|full)", false)
+                .param("since", "integer", "Only return changes since this Unix timestamp", false)
+                .param("token_budget", "integer", "Maximum token budget for response", false)
+                .param("max_results", "integer", "Maximum number of results (default: 10)", false)
+                .param("cursor", "string", "Pagination cursor for next page", false),
             Tool::new("planning_counterfactual")
                 .description("Counterfactual projection")
-                .param("operation", "string", "project|compare|learn|timeline", true),
+                .param("operation", "string", "project|compare|learn|timeline", true)
+
+                .param("include_content", "boolean", "Return full content (default: IDs only)", false)
+                .param("intent", "string", "Extraction intent level (exists|ids|summary|fields|full)", false)
+                .param("since", "integer", "Only return changes since this Unix timestamp", false)
+                .param("token_budget", "integer", "Maximum token budget for response", false)
+                .param("max_results", "integer", "Maximum number of results (default: 10)", false)
+                .param("cursor", "string", "Pagination cursor for next page", false),
             Tool::new("planning_chain")
                 .description("Decision chain analysis")
-                .param("operation", "string", "trace|cascade|roots|leaves|visualize", true),
+                .param("operation", "string", "trace|cascade|roots|leaves|visualize", true)
+
+                .param("include_content", "boolean", "Return full content (default: IDs only)", false)
+                .param("intent", "string", "Extraction intent level (exists|ids|summary|fields|full)", false)
+                .param("since", "integer", "Only return changes since this Unix timestamp", false)
+                .param("token_budget", "integer", "Maximum token budget for response", false)
+                .param("max_results", "integer", "Maximum number of results (default: 10)", false)
+                .param("cursor", "string", "Pagination cursor for next page", false),
             Tool::new("planning_consensus")
                 .description("Consensus workflows")
                 .param(
@@ -854,18 +910,44 @@ impl PlanningMcpServer {
                 ),
             Tool::new("planning_federate")
                 .description("Goal federation")
-                .param("operation", "string", "create|join|sync|handoff|status|members", true),
+                .param("operation", "string", "create|join|sync|handoff|status|members", true)
+
+                .param("include_content", "boolean", "Return full content (default: IDs only)", false)
+                .param("intent", "string", "Extraction intent level (exists|ids|summary|fields|full)", false)
+                .param("since", "integer", "Only return changes since this Unix timestamp", false)
+                .param("token_budget", "integer", "Maximum token budget for response", false)
+                .param("max_results", "integer", "Maximum number of results (default: 10)", false)
+                .param("cursor", "string", "Pagination cursor for next page", false),
             Tool::new("planning_metamorphosis")
                 .description("Goal metamorphosis")
-                .param("operation", "string", "detect|approve|history|predict|stage", true),
+                .param("operation", "string", "detect|approve|history|predict|stage", true)
+
+                .param("include_content", "boolean", "Return full content (default: IDs only)", false)
+                .param("intent", "string", "Extraction intent level (exists|ids|summary|fields|full)", false)
+                .param("since", "integer", "Only return changes since this Unix timestamp", false)
+                .param("token_budget", "integer", "Maximum token budget for response", false)
+                .param("max_results", "integer", "Maximum number of results (default: 10)", false)
+                .param("cursor", "string", "Pagination cursor for next page", false),
             Tool::new("planning_workspace")
                 .description("Workspace management")
-                .param("operation", "string", "create|switch|list|compare|merge|delete", true),
+                .param("operation", "string", "create|switch|list|compare|merge|delete", true)
+
+                .param("include_content", "boolean", "Return full content (default: IDs only)", false)
+                .param("intent", "string", "Extraction intent level (exists|ids|summary|fields|full)", false)
+                .param("since", "integer", "Only return changes since this Unix timestamp", false)
+                .param("token_budget", "integer", "Maximum token budget for response", false)
+                .param("max_results", "integer", "Maximum number of results (default: 10)", false)
+                .param("cursor", "string", "Pagination cursor for next page", false),
             Tool::new("planning_context_log")
                 .description("Log the intent and context behind a planning action")
                 .param("intent", "string", "Why you are performing this planning action", true)
                 .param("finding", "string", "What you found or concluded from the action", false)
-                .param("topic", "string", "Optional topic or category (e.g., 'goal-review', 'decision-analysis')", false),
+                .param("topic", "string", "Optional topic or category (e.g., 'goal-review', 'decision-analysis')", false)
+                .param("include_content", "boolean", "Return full content (default: IDs only)", false)
+                .param("since", "integer", "Only return changes since this Unix timestamp", false)
+                .param("token_budget", "integer", "Maximum token budget for response", false)
+                .param("max_results", "integer", "Maximum number of results (default: 10)", false)
+                .param("cursor", "string", "Pagination cursor for next page", false),
         ]
     }
 

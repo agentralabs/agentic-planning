@@ -1,5 +1,7 @@
 pub mod audit;
 pub mod auth;
+pub mod bridges;
+pub mod cache;
 pub mod contracts;
 mod error;
 mod file_format;
@@ -8,6 +10,8 @@ mod indexes;
 mod inventions;
 pub mod isolation;
 pub mod locking;
+pub mod metrics;
+pub mod query;
 mod query_engine;
 pub mod types;
 mod validation;

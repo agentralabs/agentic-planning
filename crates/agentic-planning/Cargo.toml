@@ -26,3 +26,15 @@ criterion = { version = "0.5", features = ["html_reports"] }
 [[bench]]
 name = "benchmarks"
 harness = false
+
+[[bench]]
+name = "cli_bench"
+harness = false
+
+[[bench]]
+name = "mcp_bench"
+harness = false
+
+[[bench]]
+name = "stress_bench"
+harness = false

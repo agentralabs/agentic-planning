@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://crates.io/crates/agentic-planning"><img src="https://img.shields.io/crates/v/agentic-planning.svg" alt="crates.io"></a>
-  <img src="https://img.shields.io/badge/tests-130%20passing-brightgreen.svg" alt="Tests">
+  <img src="https://img.shields.io/badge/tests-261%20passing-brightgreen.svg" alt="Tests">
   <img src="https://img.shields.io/badge/clients-Claude%20%7C%20Cursor%20%7C%20Windsurf%20%7C%20Cody-orange.svg" alt="Multi-client">
 </p>
 
@@ -544,13 +544,15 @@ This isn't a prototype. It's tested and benchmarked.
 
 | Suite | Tests | |
 |:---|---:|:---|
-| Rust core engine | **52** | Goal, decision, commitment, progress, query |
-| MCP server | **46** | Protocol, tools, resources, prompts, edge cases |
-| Bridge integration | **12** | Planning ↔ Memory, Time, Contract bridges |
-| Python SDK | **8** | CLI wrapper validation |
-| Stress tests | **6** | Concurrent access, large graphs |
+| Rust core engine | **79** | Goal, decision, commitment, progress, query, audit, auth, locking, inventions |
+| MCP edge cases & inventions | **109** | All 13 tools × unknown ops, missing params, boundaries, lifecycle, stress, stability |
+| CLI integration | **10** | Subcommand parsing, output formats |
+| FFI bindings | **10** | Null safety, UTF-8, lifecycle |
+| Bridge integration | **8** | Ghost bridge sync, dedup, content hashing |
+| Phase scenarios | **16** | End-to-end lifecycle scenarios |
+| Stress tests | **23** | Concurrent access, large graphs, rapid-fire |
 | Paper benchmarks | **6** | Criterion statistical benchmarks |
-| **Total** | **130** | All passing |
+| **Total** | **261** | All passing |
 
 ---
 
@@ -651,7 +653,7 @@ AgenticPlanning is built on three principles:
 | | |
 |:---|:---|
 | **Lines of Code** | ~12,000 (core + MCP + CLI + bridges) |
-| **Test Coverage** | 130 tests passing |
+| **Test Coverage** | 261 tests passing |
 | **MCP Tools** | 13 |
 | **MCP Resources** | 9 |
 | **MCP Prompts** | 4 |
