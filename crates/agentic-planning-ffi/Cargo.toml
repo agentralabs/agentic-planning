@@ -11,7 +11,7 @@ description = "FFI bridge for agentic-planning"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-agentic-planning = { path = "../agentic-planning" }
+agentic-planning = { path = "../agentic-planning", version = "0.1.0" }
 serde.workspace = true
 serde_json.workspace = true
 uuid.workspace = true
